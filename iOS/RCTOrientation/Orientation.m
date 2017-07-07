@@ -110,23 +110,25 @@ RCT_EXPORT_METHOD(getSpecificOrientation:(RCTResponseSenderBlock)callback)
   callback(@[[NSNull null], orientationStr]);
 }
 
-RCT_EXPORT_METHOD(lockToPortrait)
-{
-  #if DEBUG
-    NSLog(@"Locked to Portrait");
-  #endif
+- (void)_lockToPortrait {
+#if DEBUG
+  NSLog(@"Locked to Portrait");
+#endif
   [Orientation setOrientation:UIInterfaceOrientationMaskPortrait];
   [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
-    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationPortrait] forKey:@"orientation"];
+      [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationPortrait] forKey:@"orientation"];
   }];
-
 }
 
-RCT_EXPORT_METHOD(lockToLandscape)
+RCT_EXPORT_METHOD(lockToPortrait)
 {
-  #if DEBUG
-    NSLog(@"Locked to Landscape");
-  #endif
+  [self _lockToPortrait];
+}
+
+- (void)_lockToLandscape {
+#if DEBUG
+  NSLog(@"Locked to Landscape");
+#endif
   UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
   NSString *orientationStr = [self getSpecificOrientationStr:orientation];
   if ([orientationStr isEqualToString:@"LANDSCAPE-LEFT"]) {
@@ -140,6 +142,11 @@ RCT_EXPORT_METHOD(lockToLandscape)
       [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeLeft] forKey:@"orientation"];
     }];
   }
+}
+
+RCT_EXPORT_METHOD(lockToLandscape)
+{
+  [self _lockToLandscape];
 }
 
 RCT_EXPORT_METHOD(lockToLandscapeLeft)
