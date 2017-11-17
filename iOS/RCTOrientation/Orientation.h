@@ -15,4 +15,6 @@
 + (UIInterfaceOrientationMask)getOrientation;
 - (void)_lockToPortrait;
 - (void)_lockToLandscape;
+- (void)_lockToLandscapeLeft;
+- (void)_lockToLandscapeRight;
 @end
