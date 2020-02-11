@@ -17,12 +17,15 @@ npm install react-native-orientation --save
 react-native link react-native-orientation
 ```
 
+Please note that you **still need to manually configure** a couple files even when using automatic linking. Please see the ['Configuration'](#configuration) section below. You will also **need to restart your simulator** before the package will work properly.
+
 ### Manual Linking
 
 **iOS**
 
 1. Add `node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj` to your xcode project, usually under the `Libraries` group
-1. Add `libRCTOrientation.a` (from `Products` under `RCTOrientation.xcodeproj`) to build target's `Linked Frameworks and Libraries` list
+2. Add `libRCTOrientation.a` (from `Products` under `RCTOrientation.xcodeproj`) to build target's `Linked Frameworks and Libraries` list
+3. Add `$(SRCROOT)/node_modules/react-native-orientation/iOS/RCTOrientation/` to `Project Name` -> `Build Settings` -> `Header Search Paths`
 
 
 **Android**
@@ -80,6 +83,10 @@ Add the following to your project's `AppDelegate.m`:
   // ...
 
   - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    while ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications]) {
+        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    }
+  
     return [Orientation getOrientation];
   }
 
